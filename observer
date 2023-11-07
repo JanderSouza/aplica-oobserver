@@ -1,0 +1,50 @@
+mkdir observer-app
+cd observer-app
+
+git init
+
+class Observer:
+    def __init__(self):
+        self._observers = []
+
+    def register(self, observer):
+        self._observers.append(observer)
+
+    def unregister(self, observer):
+        self._observers.remove(observer)
+
+    def notify(self, message):
+        for observer in self._observers:
+            observer.update(message)
+
+class ConcreteObserver:
+    def update(self, message):
+        print(f"Received message: {message}")
+
+
+
+import unittest
+from observer import Observer, ConcreteObserver
+
+class TestObserverPattern(unittest.TestCase):
+    def test_observer_pattern(self):
+        observer = Observer()
+        concrete_observer = ConcreteObserver()
+        observer.register(concrete_observer)
+
+        message = "Hello, Observer Pattern!"
+        observer.notify(message)
+
+        # Check if the ConcreteObserver received the message
+        self.assertEqual(concrete_observer.last_message, message)
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+git add observer.py test_observer.py
+
+git commit -m "Adicionar aplicação Observer e testes"
+
+
+python -m unittest test_observer
